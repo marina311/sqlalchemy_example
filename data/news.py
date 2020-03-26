@@ -4,11 +4,12 @@ from flask_wtf import FlaskForm
 from sqlalchemy import orm
 from wtforms import StringField, TextAreaField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
+from sqlalchemy_serializer import SerializerMixin
 
 from .db_session import SqlAlchemyBase
 
 
-class News(SqlAlchemyBase):
+class News(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'news'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

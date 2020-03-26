@@ -3,9 +3,10 @@ import sqlalchemy
 import sqlalchemy.orm as orm
 from .db_session import SqlAlchemyBase
 from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
 from  werkzeug.security import generate_password_hash, check_password_hash
 
-class User(SqlAlchemyBase, UserMixin):
+class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

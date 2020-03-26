@@ -1,15 +1,22 @@
 from flask import Flask, render_template, redirect, request, make_response, session, abort
 from flask_login import LoginManager, logout_user, login_required, login_user, current_user
+from flask import make_response
+from flask import jsonify
 
 from data import db_session
 from data.news import News, NewsForm
 from data.register import LoginForm, RegisterForm
 from data.users import User
+from data import news_api
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 @login_manager.user_loader
@@ -175,8 +182,11 @@ def session_drop():  # сбрасывает счетчик и обнуляет �
     return "Счетчик сброшен. <br><a href=../session_test>Назад</a>"
 
 
+
+
 def main():
     db_session.global_init("db/blogs.sqlite")
+    app.register_blueprint(news_api.blueprint)
     app.run(port=8080, host='127.0.0.1')
 
 
